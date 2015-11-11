@@ -16,6 +16,8 @@ import static nu.mine.kino.projects.utils.Utils.isNonZeroNumeric;
 import static nu.mine.kino.projects.utils.Utils.round;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -746,6 +748,27 @@ public class ProjectUtils {
             resultMap.put(holiday.getDate(), holiday);
         }
         return resultMap;
+    }
+
+    public static Date createDateData(File target) throws IOException {
+        Date parseDate = null;
+        String string = ReadUtils.readFile(target);
+        String FORMAT = "yyyyMMdd";
+        try {
+            parseDate = DateUtils.parseDate(string, new String[] { FORMAT });
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            String tmp = string.replaceAll("\n", "");
+            String dateStr = tmp.replaceAll("\r", "");
+            try {
+                parseDate = DateUtils.parseDate(dateStr,
+                        new String[] { FORMAT });
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+
+        }
+        return parseDate;
     }
 
 }
