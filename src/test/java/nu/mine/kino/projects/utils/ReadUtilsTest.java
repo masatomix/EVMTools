@@ -67,12 +67,12 @@ public class ReadUtilsTest {
     @Test
     public void testReadFile3() throws IOException, ParseException {
         Date date1 = ProjectUtils.createDateData(new File(DATE_DAT_FILENAME));
+        System.out.println(date1);
         Assert.assertEquals(
                 DateUtils.parseDate("20151002", new String[] { "yyyyMMdd" }),
                 date1);
         Date date2 = ProjectUtils.createDateData(new File("base_date2.dat"));
-
-        System.out.println(date1);
+        System.out.println(date2);
         Assert.assertEquals(
                 DateUtils.parseDate("20151002", new String[] { "yyyyMMdd" }),
                 date2);
