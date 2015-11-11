@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
+import junit.framework.Assert;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 
@@ -31,7 +33,7 @@ public class ReadUtilsTest {
 
     public static final String SERIES_DAT_FILENAME = BASE + "_series.dat";
 
-    // @Test
+    @Test
     public void testReadFile() throws IOException {
         String base_date = ReadUtils.readFile(new File(DATE_DAT_FILENAME));
         String series_date = ReadUtils.readFile(new File(SERIES_DAT_FILENAME));
@@ -43,8 +45,8 @@ public class ReadUtilsTest {
 
     }
 
-    // @Test
-    public void testReadFile2() throws IOException, ParseException {
+    @Test
+    public void testReadFile2() throws IOException {
         String base_date = ReadUtils.readFile(new File("base_date2.dat"));
         String series_date = ReadUtils.readFile(new File(SERIES_DAT_FILENAME));
 
@@ -53,19 +55,27 @@ public class ReadUtilsTest {
         System.out.println("[" + series_date + "]");
         System.out.println("--------------");
 
-        Date parseDate = DateUtils.parseDate(base_date,
-                new String[] { "yyyyMMdd" });
-        System.out.println(parseDate);
+        try {
+            Date parseDate = DateUtils.parseDate(base_date,
+                    new String[] { "yyyyMMdd" });
+            Assert.fail("ParseException Ç™î≠ê∂ÇµÇ»Ç¢");
+        } catch (ParseException e) {
+        }
 
     }
 
     @Test
-    public void testReadFile3() throws IOException {
+    public void testReadFile3() throws IOException, ParseException {
         Date date1 = ProjectUtils.createDateData(new File(DATE_DAT_FILENAME));
-        System.out.println(date1);
+        Assert.assertEquals(
+                DateUtils.parseDate("20151002", new String[] { "yyyyMMdd" }),
+                date1);
         Date date2 = ProjectUtils.createDateData(new File("base_date2.dat"));
-        System.out.println(date2);
+
+        System.out.println(date1);
+        Assert.assertEquals(
+                DateUtils.parseDate("20151002", new String[] { "yyyyMMdd" }),
+                date2);
 
     }
-
 }
