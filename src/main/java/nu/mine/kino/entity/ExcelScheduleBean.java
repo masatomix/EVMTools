@@ -1,17 +1,15 @@
 /******************************************************************************
- * Copyright (c) 2008-2014 Masatomi KINO and others. 
+ * Copyright (c) 2008-2009 Masatomi KINO and others. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * Contributors:
  *      Masatomi KINO - initial API and implementation
+ * $Id$
  ******************************************************************************/
 
 package nu.mine.kino.entity;
-
-//import net.java.amateras.xlsbeans.annotation.Column;
-//import net.java.amateras.xlsbeans.annotation.MapColumns;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -20,8 +18,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * POIで取得したJavaBeansからフィールドにデータをコピーしてもらっている。
  * 
  * @author Masatomi KINO and JavaBeans Creator Plug-in
+ * @version $Revision$
  */
-public class ExcelScheduleBean {
+public class ExcelScheduleBean implements java.io.Serializable {
 
     /**
      * ﾀｽｸID
@@ -39,7 +38,6 @@ public class ExcelScheduleBean {
      * @param taskId
      *            ﾀｽｸID
      */
-    //    @Column(columnName = "ﾀｽｸID")//$NON-NLS-1$
     public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
@@ -50,7 +48,6 @@ public class ExcelScheduleBean {
      * @param plotDataMap
      *            ガントチャート
      */
-    // @MapColumns(previousColumnName = "備考")
     public void setPlotDataMap(java.util.Map<String, String> plotDataMap) {
         this.plotDataMap = plotDataMap;
     }

@@ -1,11 +1,12 @@
 /******************************************************************************
- * Copyright (c) 2008-2014 Masatomi KINO and others. 
+ * Copyright (c) 2008-2009 Masatomi KINO and others. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * Contributors:
  *      Masatomi KINO - initial API and implementation
+ * $Id$
  ******************************************************************************/
 
 package nu.mine.kino.entity;
@@ -15,8 +16,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * 
  * @author Masatomi KINO and JavaBeans Creator Plug-in
+ * @version $Revision$
  */
-public class TextScheduleBean {
+public class TextScheduleBean implements java.io.Serializable {
 
     /**
      * ﾀｽｸID
@@ -644,24 +646,20 @@ public class TextScheduleBean {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("ﾀｽｸID", taskId)
-                // .append("分類", type).append("タスクの＃に該当する列", taskSharp)
-                .append("タスク名", taskName)
-                // .append("タスク名の1インデントされた列", taskName1)
-                // .append("タスク名の2インデントされた列", taskName2)
-                // .append("タスク名の3インデントされた列", taskName3)
-                .append("先行ﾀｽｸID", senkoTaskId)
-                .append("担当", personInCharge)
-                // .append("タスク概要", taskAbstract).append("主要アウトプット", output)
-                // .append("先週の活動実績報告", reportOfLastWeek)
-                // .append("今週の活動予定", reportOfThisWeek).append("状況", status)
+        return new ToStringBuilder(this).append("ﾀｽｸID", taskId)
+                .append("分類", type).append("タスクの＃に該当する列", taskSharp)
+                .append("タスク名", taskName).append("タスク名の1インデントされた列", taskName1)
+                .append("タスク名の2インデントされた列", taskName2)
+                .append("タスク名の3インデントされた列", taskName3)
+                .append("先行ﾀｽｸID", senkoTaskId).append("担当", personInCharge)
+                .append("タスク概要", taskAbstract).append("主要アウトプット", output)
+                .append("先週の活動実績報告", reportOfLastWeek)
+                .append("今週の活動予定", reportOfThisWeek).append("状況", status)
                 .append("予定工数", numberOfManDays)
                 .append("予定開始日", scheduledStartDate)
-                .append("予定終了日", scheduledEndDate)
-                // .append("実績開始日", startDate)
-                // .append("実績終了日", endDate)
-                .append("進捗率", progressRate).append("稼動予定日数", numberOfDays)
+                .append("予定終了日", scheduledEndDate).append("実績開始日", startDate)
+                .append("実績終了日", endDate).append("進捗率", progressRate)
+                .append("稼動予定日数", numberOfDays)
                 .append("Planned Value", plannedValue)
                 .append("Earned Value", earnedValue)
                 .append("Actual Cost", actualCost).append("備考", remarks)
