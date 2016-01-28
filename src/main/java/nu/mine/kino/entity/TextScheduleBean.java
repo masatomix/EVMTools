@@ -16,7 +16,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Masatomi KINO and JavaBeans Creator Plug-in
  */
-public class TextScheduleBean  implements java.io.Serializable{
+public class TextScheduleBean implements java.io.Serializable {
 
     /**
      * À½¸ID
