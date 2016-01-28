@@ -580,6 +580,17 @@ public class ProjectUtils {
      */
     public static boolean isHoliday(Project project, Date targetDate) {
         Holiday[] holidays = project.getHolidays();
+        return isHoliday(holidays, targetDate);
+    }
+
+    /**
+     * 土日祝日であるかどうかをチェックする
+     * 
+     * @param holidays
+     * @param targetDate
+     * @return
+     */
+    public static boolean isHoliday(Holiday[] holidays, Date targetDate) {
         if (holidays != null) {//
             for (Holiday holiday : holidays) {
                 if (holiday.getDate().getTime() == targetDate.getTime()) {
