@@ -16,11 +16,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import nu.mine.kino.entity.ACTotalBean;
 import nu.mine.kino.entity.EVTotalBean;
@@ -40,27 +47,21 @@ import nu.mine.kino.entity.Task;
 import nu.mine.kino.entity.TaskInformation;
 import nu.mine.kino.projects.utils.ProjectUtils;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-
 /**
  * @author Masatomi KINO
  * @version $Revision$
  */
 public class ExcelProjectCreator extends InputStreamProjectCreator {
 
-    // public ExcelProjectCreator(InputStream in) {
-    // super(in);
-    // }
+    public ExcelProjectCreator(InputStream in) {
+        super(in);
+    }
 
-    private final File file;
+    // private final File file;
 
     public ExcelProjectCreator(File file) throws ProjectException {
         super(file);
-        this.file = file;
+        // this.file = file;
     }
 
     /**
@@ -74,9 +75,9 @@ public class ExcelProjectCreator extends InputStreamProjectCreator {
         Map<String, ExcelPOIScheduleBean> poiMap = new HashMap<String, ExcelPOIScheduleBean>();
         Date baseDate = null;
         Holiday[] holidays = null;
-        FileInputStream in = null;
+        InputStream in = null;
         try {
-            in = new FileInputStream(file);
+            in = getInputStream();
             Workbook workbook = WorkbookFactory.create(in);
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -84,31 +85,13 @@ public class ExcelProjectCreator extends InputStreamProjectCreator {
             poiMap = ProjectUtils.createExcelPOIScheduleBeanMap(workbook,
                     baseDate);
             holidays = ProjectUtils.createHolidays(workbook);
-        } catch (InvalidFormatException e) {
-            throw new ProjectException(e);
-        } catch (FileNotFoundException e) {
-            throw new ProjectException(e);
-        } catch (IOException e) {
-            throw new ProjectException(e);
-        } finally {
-            if (in != null)
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    // TODO 自動生成された catch ブロック
-                    e.printStackTrace();
-                }
-        }
 
-        try {
             List<TaskInformation> taskInfoList = new ArrayList<TaskInformation>();
-            ExcelScheduleBeanSheet sheet = new ExcelScheduleBeanSheet();
-            // getInputStream(), ExcelScheduleBeanSheet.class);
-            // ExcelScheduleBeanSheet sheet = new XLSBeans().load(
-            // getInputStream(), ExcelScheduleBeanSheet.class);
-            sheet.setBaseDate(baseDate);
-            plus(sheet);
-            java.util.List<ExcelScheduleBean> instanceList = sheet
+            ExcelScheduleBeanSheet sheet1 = new ExcelScheduleBeanSheet();
+
+            sheet1.setBaseDate(baseDate);
+            sheet1.init(workbook);
+            java.util.List<ExcelScheduleBean> instanceList = sheet1
                     .getExcelScheduleBean();
 
             for (ExcelScheduleBean instance : instanceList) {
@@ -139,25 +122,11 @@ public class ExcelProjectCreator extends InputStreamProjectCreator {
             project.setTaskInformations(taskInfoList
                     .toArray(new TaskInformation[taskInfoList.size()]));
 
-            ExcelScheduleBeanSheet2Project.convert(sheet, project);
+            ExcelScheduleBeanSheet2Project.convert(sheet1, project);
 
             project.setHolidays(holidays);
             return project;
-            // } catch (XLSBeansException e) {
-            // throw new ProjectException(e);
-            // }
-        } finally {
 
-        }
-    }
-
-    private void plus(ExcelScheduleBeanSheet excelBeanSheet)
-            throws ProjectException {
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream(file);
-            Workbook workbook = WorkbookFactory.create(in);
-            excelBeanSheet.init(workbook);
         } catch (InvalidFormatException e) {
             throw new ProjectException(e);
         } catch (FileNotFoundException e) {
@@ -175,6 +144,31 @@ public class ExcelProjectCreator extends InputStreamProjectCreator {
         }
 
     }
+
+    // private void plus(ExcelScheduleBeanSheet excelBeanSheet)
+    // throws ProjectException {
+    // FileInputStream in = null;
+    // try {
+    // in = new FileInputStream(file);
+    // Workbook workbook = WorkbookFactory.create(in);
+    // excelBeanSheet.init(workbook);
+    // } catch (InvalidFormatException e) {
+    // throw new ProjectException(e);
+    // } catch (FileNotFoundException e) {
+    // throw new ProjectException(e);
+    // } catch (IOException e) {
+    // throw new ProjectException(e);
+    // } finally {
+    // if (in != null)
+    // try {
+    // in.close();
+    // } catch (IOException e) {
+    // // TODO 自動生成された catch ブロック
+    // e.printStackTrace();
+    // }
+    // }
+    //
+    // }
 
     // private void setTask(ExcelPOIScheduleBean source, Task dest) {
     // dest.setScheduledEndDate(scheduledEndDate(source, dest));
